@@ -30,18 +30,27 @@ function addNewItem() {
 
 function createItem(text, index) {
     const listItem = create("li");
-    listItem.textContent = text;
-
-    addCompleteBtn(listItem, index);
-    addDeleteBtn(listItem, index);
+    listItem.textContent = text.title();
+    
+    listItem.classList.add("list-item");
+    addButtons(listItem, index);
     
     return listItem;
+}
+
+function addButtons(element, index){
+    const div = create("div");
+    div.classList.add("btn-group");
+    addCompleteBtn(div, index);
+    addDeleteBtn(div, index);
+    element.appendChild(div);
 }
 
 function addDeleteBtn(element, index) {
     const btn = create("button");
     btn.textContent = "Delete";
     btn.id = `element${index}`;
+    btn.classList.add("btn-danger");
 
     btn.addEventListener("click", () => {
         if(!confirm("Are you sure you want to do this?"))
@@ -56,8 +65,9 @@ function addDeleteBtn(element, index) {
 
 function addCompleteBtn(element, index) {
     const btn = create("button");
-    btn.textContent = toDoList[index].isCompleted ? "Return" : "Complete";
-    btn.id = `element${index}`;
+    btn.textContent = toDoList[index].isCompleted ? "Return" : "Completed";
+    btn.id = `complement${index}`;
+    btn.classList.add("btn-success")
 
     btn.addEventListener("click", () => toggleComplete(index));
 
@@ -70,10 +80,15 @@ function toggleComplete(index) {
     renderToDos();
 }
 
-renderToDos();
+document.addEventListener("keydown", function(event) {
+    if (event.keyCode === 13)
+        addNewItem();
+});
 
 const btn = get("#add-btn");
 btn.addEventListener("click", addNewItem);
+
+renderToDos();
 
 
 
@@ -105,4 +120,17 @@ Array.prototype.newPop = function(index){
     let item = this[index];
     this.splice(index, 1);
     return item;
+}
+
+String.prototype.capitalize = function (){
+    let text = new String();
+
+    for(let word of this.split(' '))
+        text += word ? ' ' + word.title() : ' ';
+
+    return text;
+}
+
+String.prototype.title = function (){
+    return this[0].toUpperCase() + this.slice(1).toLowerCase();
 }

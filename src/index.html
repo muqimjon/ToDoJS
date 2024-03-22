@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
     <title>Document</title>
 </head>
 <body>
-    <h1>To Do List</h1>
-    <input type="text" id="inToDo">
-    <button id="add-btn">Add</button>
+    <div class="container">
+        <h1>To do list</h1>
+        <input type="text" id="inToDo">
+        <button id="add-btn">Add</button>
 
-    <h3>Active</h3>
-    <div class="todo" id="toDo-active"></div>
-    
-    <hr>
+        <h3>Active</h3>
+        <ul class="todo" id="toDo-active"></ul>
+        
+        <hr>
 
-    <h3>Completed</h3>
-    <div class="todo__complete" id="toDo-completed"></div>
+        <h3>Completed</h3>
+        <ul class="todo__complete" id="toDo-completed"></ul>
 
-    <!-- <script src="./toDoApi.js"></script> -->
+    </div>
+
     <script src="./main.js"></script>
 </body>
 </html>
