@@ -16,10 +16,10 @@ function renderToDos() {
 function addNewItem() {
     const inp = get("#inToDo");
     let text = inp.value.trim();
-
+    
     if(text)
         toDoList.push({
-            text: inp.text,
+            text: text,
             isCompleted: false,
         });
 
@@ -66,6 +66,7 @@ function addCompleteBtn(element, index) {
 
 function toggleComplete(index) {
     toDoList[index].isCompleted = !toDoList[index].isCompleted;
+    toDoList.push(toDoList.newPop(index));
     renderToDos();
 }
 
@@ -73,9 +74,6 @@ renderToDos();
 
 const btn = get("#add-btn");
 btn.addEventListener("click", addNewItem);
-
-
-
 
 
 
@@ -101,4 +99,10 @@ function set(parent, child) {
 
 function create(element){
     return document.createElement(element)
+}
+
+Array.prototype.newPop = function(index){
+    let item = this[index];
+    this.splice(index, 1);
+    return item;
 }
