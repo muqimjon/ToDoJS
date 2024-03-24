@@ -1,7 +1,7 @@
 class ItemGenerator {
     createItem(text, index) {
         const listItem = create("li");
-        listItem.textContent = text.title();
+        listItem.textContent = title(text);
         
         listItem.classList.add("list-item");
         this.#addButtons(listItem, index);
@@ -23,8 +23,7 @@ class ItemGenerator {
         btn.id = `element${index}`;
         btn.classList.add("btn-danger");
     
-        btn.addEventListener("click", this.#removeItem);
-    
+        btn.addEventListener("click", () => this.#removeItem(index));
         element.appendChild(btn);
     }
     
@@ -32,7 +31,7 @@ class ItemGenerator {
         const btn = create("button");
         btn.textContent = toDoList[index].isCompleted ? "Return" : "Complete";
         btn.id = `complement${index}`;
-        btn.classList.add("btn-success")
+        btn.classList.add("btn-success");
     
         btn.addEventListener("click", () => this.#toggleComplete(index));
     
@@ -41,20 +40,40 @@ class ItemGenerator {
     
     #removeItem(index) {
         if(!confirm("Are you sure you want to do this?"))
-                return;
+            return;
     
         toDoList.splice(index, 1);
+        storage.save('toDo', toDoList);
         renderToDos();
     }
 
     #toggleComplete(index) {
         toDoList[index].isCompleted = !toDoList[index].isCompleted;
-        toDoList.push(toDoList.newPop(index));
+        storage.save('toDo', toDoList);
         renderToDos();
     }
 }
 
-let toDoList = [];
+class Memory {
+    retrieve(key) {
+        return this.#restore(localStorage.getItem(key));
+    }
+
+    save(key, data) {
+        localStorage.setItem(key, this.#toString(data));
+    }
+
+    #restore(text) {
+        return JSON.parse(text)
+    }
+
+    #toString(obj) {
+        return JSON.stringify(obj);
+    }
+}
+
+let storage = new Memory();
+let toDoList = storage.retrieve('toDo') || [];
 let api = new ItemGenerator();
 
 function renderToDos() {
@@ -75,10 +94,14 @@ function addNewItem() {
     let text = inp.value.trim();
     
     if(text)
+    {
         toDoList.push({
             text: text,
             isCompleted: false,
         });
+
+        storage.save('toDo', toDoList);
+    }
 
     inp.value = '';
 
@@ -116,24 +139,25 @@ function addClickListener(key, fn){
         });
 }
 
-Array.prototype.newPop = function(index){
-    if(index == undefined)
-        index = this.length - 1
 
-    let item = this[index];
-    this.splice(index, 1);
+function pop(arr, index){
+    if(index == undefined)
+        index = arr.length - 1
+
+    let item = arr[index];
+    arr.splice(index, 1);
     return item;
 }
 
-String.prototype.capitalize = function (){
+function capitalize(words){
     let text = new String();
     
-    for(let word of this.split(' '))
-        text.add(word ? ' ' + word.title() : ' ');
+    for(let word of words.split(' '))
+        text += word ? ' ' + word.title() : '';
 
     return text;
 }
 
-String.prototype.title = function (){
-    return this[0].toUpperCase() + this.slice(1).toLowerCase();
+function title(text){
+    return text[0].toUpperCase() + text.slice(1).toLowerCase();
 }
