@@ -1,3 +1,5 @@
+import { addClickListener, create, get, set, title } from "./domApi.js";
+
 class ItemGenerator {
     createItem(text, index) {
         const listItem = create("li");
@@ -112,52 +114,3 @@ renderToDos();
 
 addClickListener("#add-btn", addNewItem);
 addClickListener(13, addNewItem);
-
-
-// Another module
-
-function get(selector) {
-    return document.querySelector(selector);
-}
-
-function set(parent, child) {
-    parent.appendChild(child);
-}
-
-function create(element){
-    return document.createElement(element)
-}
-
-function addClickListener(key, fn){
-    if(typeof key == "string")
-        get(key).addEventListener("click", fn);
-    else
-        document.addEventListener("keydown", 
-            function(event) { 
-                if (event.keyCode === key) 
-                    fn();
-        });
-}
-
-
-function pop(arr, index){
-    if(index == undefined)
-        index = arr.length - 1
-
-    let item = arr[index];
-    arr.splice(index, 1);
-    return item;
-}
-
-function capitalize(words){
-    let text = new String();
-    
-    for(let word of words.split(' '))
-        text += word ? ' ' + word.title() : '';
-
-    return text;
-}
-
-function title(text){
-    return text[0].toUpperCase() + text.slice(1).toLowerCase();
-}

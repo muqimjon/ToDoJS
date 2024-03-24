@@ -21,24 +21,25 @@ export function addClickListener(key, fn){
         });
 }
 
-Array.prototype.newPop = function(index){
-    if(index == undefined)
-        index = this.length - 1
 
-    let item = this[index];
-    this.splice(index, 1);
+export function pop(arr, index){
+    if(index == undefined)
+        index = arr.length - 1
+
+    let item = arr[index];
+    arr.splice(index, 1);
     return item;
 }
 
-String.prototype.capitalize = function (){
+export function capitalize(words){
     let text = new String();
     
-    for(let word of this.split(' '))
-        text.add(word ? ' ' + word.title() : ' ');
+    for(let word of words.split(' '))
+        text += word ? ' ' + word.title() : '';
 
     return text;
 }
 
-String.prototype.title = function (){
-    return this[0].toUpperCase() + this.slice(1).toLowerCase();
-} 
+export function title(text){
+    return text[0].toUpperCase() + text.slice(1).toLowerCase();
+}
