@@ -77,3 +77,15 @@ body {
     justify-content: space-between;
     margin-bottom: 10px;
   }
+
+  @media only screen and (max-width: 600px) {
+  input {
+    width: 100%;
+  }
+
+  #add-btn {
+    float: right;
+    margin-top: 10px;
+    display: block;
+  }
+}
